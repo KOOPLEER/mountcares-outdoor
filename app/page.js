@@ -1,9 +1,13 @@
 'use client'
 
+import { useState } from 'react'
 import Link from 'next/link'
+import { ChevronDown, Tent, Utensils, Compass, Menu } from 'lucide-react'
 
 export default function LandingPage() {
-  // Data tiruan untuk pratinjau produk unggulan (bisa diganti nanti)
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+
+  // Data tiruan untuk pratinjau produk
   const featuredProducts = [
     {
       id: 1,
@@ -31,7 +35,7 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col selection:bg-orange-500 selection:text-white">
       
-      {/* 1. Navbar Profesional */}
+      {/* Navbar dengan Dropdown Menu & Ikon Garis Tiga */}
       <header className="sticky top-0 z-50 w-full border-b border-slate-800 bg-slate-950/80 backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -50,21 +54,54 @@ export default function LandingPage() {
             <Link href="/" className="hover:text-orange-400 transition">Beranda</Link>
             <a href="#fitur" className="hover:text-orange-400 transition">Keunggulan</a>
             <a href="#katalog-preview" className="hover:text-orange-400 transition">Produk</a>
-            <Link href="/katalog" className="hover:text-orange-400 transition">Katalog Lengkap</Link>
           </nav>
 
-          <div className="flex items-center gap-3">
-            <Link 
-              href="/katalog"
-              className="bg-orange-600 hover:bg-orange-500 text-white px-4 py-2 rounded-xl text-sm font-semibold transition shadow-md shadow-orange-900/20"
+          {/* Dropdown Menu Opsi Katalog */}
+          <div className="relative">
+            <button
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              onBlur={() => setTimeout(() => setIsDropdownOpen(false), 200)} // Delay agar klik menu sempat tereksekusi
+              className="bg-orange-600 hover:bg-orange-500 text-white px-4 py-2 rounded-xl text-sm font-semibold transition shadow-md shadow-orange-900/20 flex items-center gap-2.5"
             >
-              Buka Katalog &rarr;
-            </Link>
+              <Menu className="w-4 h-4" />
+              <span>Menu</span>
+              <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : ''}`} />
+            </button>
+
+            {/* Panel Dropdown */}
+            {isDropdownOpen && (
+              <div className="absolute right-0 mt-2 w-56 rounded-2xl bg-slate-900 border border-slate-800 shadow-xl py-2 z-50">
+                <div className="px-4 py-2 border-b border-slate-800/80 text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+                  Pilih Menu Opsi
+                </div>
+                <Link
+                  href="/katalog"
+                  className="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-300 hover:bg-orange-600/10 hover:text-orange-400 transition"
+                >
+                  <Compass className="w-4 h-4 text-orange-500" />
+                  <span>Semua Katalog Alat</span>
+                </Link>
+                <Link
+                  href="/katalog?kategori=tenda"
+                  className="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-300 hover:bg-orange-600/10 hover:text-orange-400 transition"
+                >
+                  <Tent className="w-4 h-4 text-orange-500" />
+                  <span>Kategori Tenda</span>
+                </Link>
+                <Link
+                  href="/katalog?kategori=masak"
+                  className="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-300 hover:bg-orange-600/10 hover:text-orange-400 transition"
+                >
+                  <Utensils className="w-4 h-4 text-orange-500" />
+                  <span>Alat Masak & Nesting</span>
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       </header>
 
-      {/* 2. Hero Section */}
+      {/* Hero Section */}
       <section className="relative py-24 sm:py-32 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-slate-900/40 to-slate-950 overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-orange-900/10 via-transparent to-transparent pointer-events-none"></div>
         

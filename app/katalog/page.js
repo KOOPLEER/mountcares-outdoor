@@ -4,6 +4,16 @@ import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase'
 import toast, { Toaster } from 'react-hot-toast'
 
+// Helper untuk mengubah link Google Drive menjadi direct link / preview image yang valid
+function getDirectDriveUrl(url) {
+  if (!url) return ''
+  const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/) || url.match(/id=([a-zA-Z0-9_-]+)/)
+  if (match && match[1]) {
+    return `https://lh3.googleusercontent.com/d/${match[1]}`
+  }
+  return url
+}
+
 export default function KatalogPage() {
   const [products, setProducts] = useState([])
   const [filteredProducts, setFilteredProducts] = useState([])
@@ -126,9 +136,29 @@ export default function KatalogPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {filteredProducts.map((product) => {
               const namaProduk = product["NAMA PRICELIST"] || product["NAMA PRICELIS~"] || "Tanpa Nama"
+              // Sesuaikan nama kolom gambar di database Anda (misal: product.GAMBAR atau product.URL_FOTO)
+              const gambarUrl = product["LINK FOTO"] || product.GAMBAR || product.gambar || '' 
+
               return (
                 <div key={product.id} className="bg-white p-5 rounded-lg shadow border border-gray-200 flex flex-col justify-between">
                   <div>
+                    {/* Kotak Gambar disesuaikan menjadi persegi (aspect-square) */}
+                    <div className="w-full aspect-square bg-gray-100 rounded-md mb-3 overflow-hidden flex items-center justify-center">
+                      {gambarUrl ? (
+                        <img 
+                          src={getDirectDriveUrl(gambarUrl)} 
+                          alt={namaProduk}
+                          className="w-full h-full object-cover"
+                          onError={(e) => {
+                            e.target.onerror = null;
+                            e.target.src = 'https://via.placeholder.com/300?text=No+Image';
+                          }}
+                        />
+                      ) : (
+                        <span className="text-xs text-gray-400">Tidak ada gambar</span>
+                      )}
+                    </div>
+
                     <div className="flex gap-2 mb-2 flex-wrap">
                       {product.JENIS && (
                         <span className="text-xs font-semibold px-2 py-1 bg-green-100 text-green-800 rounded-full">

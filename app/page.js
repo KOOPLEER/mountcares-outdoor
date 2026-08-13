@@ -911,7 +911,7 @@ export default function LandingPage() {
               aria-label="Mountcares Outdoor"
             >
               <img
-                src="/logo/mountcares-horizontal-white.png"
+                src="/logo/mountcares-horizontal.png"
                 alt="Mountcares Outdoor"
                 className="h-10 w-auto object-contain"
               />

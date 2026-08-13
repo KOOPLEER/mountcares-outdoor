@@ -174,7 +174,7 @@ export default function BookingModal({
 
           <div className="
             relative overflow-hidden
-            bg-gradient-to-br
+            bg-linear-to-br
             from-brand-light-blue
             to-brand-light-cyan
             border border-brand-cyan/20

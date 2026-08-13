@@ -67,11 +67,11 @@ export default function LandingPage() {
             aria-label="Mountcares Outdoor"
           >
             <img
-              src="/logo/mountcares-horizontal.png"
+              src="/Logo/mountcares-horizontal.png"
               alt="Mountcares Outdoor"
               className="h-10 sm:h-11 w-auto object-contain"
               onLoad={() => {
-                console.log("Logo berhasil dimuat:", "/logo/mountcares-horizontal.png");
+                console.log("Logo berhasil dimuat:", "/Logo/mountcares-horizontal.png");
               }}
               onError={(e) => {
                 console.error("Logo gagal dimuat!", {
@@ -936,7 +936,7 @@ export default function LandingPage() {
               aria-label="Mountcares Outdoor"
             >
               <img
-                src="/logo/mountcares-horizontal.png"
+                src="/Logo/mountcares-horizontal.png"
                 alt="Mountcares Outdoor"
                 className="h-10 w-auto object-contain"
               />

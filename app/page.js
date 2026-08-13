@@ -4,6 +4,22 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { ChevronDown, Tent, Utensils, Compass, Menu } from 'lucide-react'
 
+function getDirectDriveUrl(url) {
+  if (!url) return ''
+
+  const value = String(url).trim()
+
+  const match =
+    value.match(/\/d\/([a-zA-Z0-9_-]+)/) ||
+    value.match(/[?&]id=([a-zA-Z0-9_-]+)/)
+
+  if (match?.[1]) {
+    return `https://lh3.googleusercontent.com/d/${match[1]}`
+  }
+
+  return value
+}
+
 export default function LandingPage() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 

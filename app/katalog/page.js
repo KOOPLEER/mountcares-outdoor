@@ -66,10 +66,27 @@ export default function KatalogPage() {
 
       <div className="max-w-6xl mx-auto">
         <div className="flex justify-between items-center mb-6">
+        <div className="flex items-center gap-4">
+          {/* Menggunakan ID file langsung agar fungsi merender link lh3 dengan tepat */}
+          <img 
+          src={getDirectDriveUrl("https://drive.google.com/file/d/1BdI9231AeEqaTtp0z-Po5pxVwP9Z8Ny1/view?usp=drive_link")} 
+          alt="Logo Mountcares" 
+          className="h-16 w-16 object-contain"
+        />
           <div>
             <h1 className="text-3xl font-bold mb-2">Katalog Mountcares Outdoor</h1>
             <p className="text-gray-600">Pilih perlengkapan camping dan aksesoris penunjang petualangan Anda.</p>
           </div>
+        </div>
+        
+        <div className="flex items-center gap-3">
+          <a
+            href="/" // Sesuaikan dengan route/link halaman beranda aplikasi Anda
+            className="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg font-medium shadow-sm hover:bg-gray-200 transition flex items-center gap-2"
+          >
+            🏠 Beranda
+          </a>
+
           <button 
             onClick={() => setIsCartOpen(true)}
             className="bg-orange-600 text-white px-4 py-2 rounded-lg font-medium shadow hover:bg-orange-700 transition flex items-center gap-2"
@@ -77,6 +94,7 @@ export default function KatalogPage() {
             🛒 Keranjang ({cart.reduce((acc, item) => acc + item.qty, 0)})
           </button>
         </div>
+      </div>
 
         {/* Navbar Filter Jenis */}
         {!loading && jenisList.length > 0 && (
@@ -113,7 +131,37 @@ export default function KatalogPage() {
         ) : (
           <div className="space-y-8">
             
-            {/* 1. KATALOG PAKET (Collapsible) */}
+            {/* 1. KATALOG SATUAN (Collapsible) */}
+            <div className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
+              <div 
+                onClick={() => setIsSatuanOpen(!isSatuanOpen)}
+                className="bg-gray-100 px-6 py-4 flex justify-between items-center cursor-pointer hover:bg-gray-200 transition"
+              >
+                <div className="flex items-center gap-2">
+                  <h2 className="text-base font-bold text-gray-900">⛺ KATALOG SATUAN</h2>
+                  <span className="text-xs bg-gray-200 text-gray-800 px-2 py-0.5 rounded-full font-semibold">
+                    {satuanProducts.length} Item
+                  </span>
+                </div>
+                <span className="text-xs font-semibold text-gray-700">
+                  {isSatuanOpen ? '▲ Sembunyikan' : '▼ Tampilkan'}
+                </span>
+              </div>
+
+              {isSatuanOpen && (
+                <div className="p-4">
+                  {satuanProducts.length === 0 ? (
+                    <p className="text-gray-500 py-10 text-center text-xs">Belum ada produk satuan untuk kategori ini.</p>
+                  ) : (
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2">
+                      {satuanProducts.map((product) => renderProductCard(product, addToCart))}
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+            
+            {/* 2. KATALOG PAKET (Collapsible) */}
             <div className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
               <div 
                 onClick={() => setIsPaketOpen(!isPaketOpen)}
@@ -143,35 +191,7 @@ export default function KatalogPage() {
               )}
             </div>
 
-            {/* 2. KATALOG SATUAN (Collapsible) */}
-            <div className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
-              <div 
-                onClick={() => setIsSatuanOpen(!isSatuanOpen)}
-                className="bg-gray-100 px-6 py-4 flex justify-between items-center cursor-pointer hover:bg-gray-200 transition"
-              >
-                <div className="flex items-center gap-2">
-                  <h2 className="text-base font-bold text-gray-900">⛺ KATALOG SATUAN</h2>
-                  <span className="text-xs bg-gray-200 text-gray-800 px-2 py-0.5 rounded-full font-semibold">
-                    {satuanProducts.length} Item
-                  </span>
-                </div>
-                <span className="text-xs font-semibold text-gray-700">
-                  {isSatuanOpen ? '▲ Sembunyikan' : '▼ Tampilkan'}
-                </span>
-              </div>
-
-              {isSatuanOpen && (
-                <div className="p-4">
-                  {satuanProducts.length === 0 ? (
-                    <p className="text-gray-500 py-10 text-center text-xs">Belum ada produk satuan untuk kategori ini.</p>
-                  ) : (
-                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2">
-                      {satuanProducts.map((product) => renderProductCard(product, addToCart))}
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
+            
 
           </div>
         )}
@@ -415,7 +435,15 @@ function CartModal({ cart, setCart, rentalSchedule, setRentalSchedule, onClose }
             <h2 className="text-xl font-bold mb-4">Daftar Isi Keranjang & Jadwal</h2>
             
             {cart.length === 0 ? (
-              <p className="text-gray-500 py-6 text-center">Keranjang Anda masih kosong.</p>
+              <div className="py-6 text-center space-y-4">
+                <p className="text-gray-500">Keranjang Anda masih kosong.</p>
+                <button 
+                  onClick={onClose} 
+                  className="px-4 bg-gray-200 py-2 rounded text-sm font-medium hover:bg-gray-300 transition"
+                >
+                  Tutup
+                </button>
+              </div>
             ) : (
               <div className="space-y-4">
                 <div className="bg-orange-50 p-3 rounded-lg border border-orange-200 space-y-3">

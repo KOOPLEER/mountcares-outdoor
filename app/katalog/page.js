@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase'
 import toast, { Toaster } from 'react-hot-toast'
+import { useKatalogData } from '@/lib/useKatalogData'
 
 // Helper untuk mengubah link Google Drive menjadi direct link / preview image yang valid
 function getDirectDriveUrl(url) {
@@ -15,14 +16,16 @@ function getDirectDriveUrl(url) {
 }
 
 export default function KatalogPage() {
-  const [products, setProducts] = useState([])
-  const [filteredProducts, setFilteredProducts] = useState([])
-  const [loading, setLoading] = useState(true)
-  
-  // State untuk filter jenis & kategori navbar
-  const [jenisList, setJenisList] = useState([])
-  const [selectedJenis, setSelectedJenis] = useState('SEMUA')
+  // Menggunakan custom hook untuk mengelola state data produk & filter
+  const { 
+    filteredProducts, 
+    jenisList, 
+    selectedJenis, 
+    setSelectedJenis, 
+    loading 
+  } = useKatalogData()
 
+  // State operasional keranjang & jadwal sewa
   const [cart, setCart] = useState([])
   const [rentalSchedule, setRentalSchedule] = useState({
     tanggal_mulai: '',
@@ -31,43 +34,11 @@ export default function KatalogPage() {
   })
   const [isCartOpen, setIsCartOpen] = useState(false)
 
-  useEffect(() => {
-    fetchProducts()
-  }, [])
+  // State untuk mengontrol apakah Katalog Paket dan Katalog Satuan terbuka atau tertutup
+  const [isPaketOpen, setIsPaketOpen] = useState(false)
+  const [isSatuanOpen, setIsSatuanOpen] = useState(true) // Default terbuka
 
-  // Filter produk setiap kali selectedJenis atau products berubah
-  useEffect(() => {
-    if (selectedJenis === 'SEMUA') {
-      setFilteredProducts(products)
-    } else {
-      setFilteredProducts(products.filter(item => item.JENIS === selectedJenis))
-    }
-  }, [selectedJenis, products])
-
-  async function fetchProducts() {
-    try {
-      const { data, error } = await supabase
-        .from('PRICELIST SATUAN AKTIF')
-        .select('*')
-      
-      if (error) throw error
-      
-      const listData = data || []
-      setProducts(listData)
-      setFilteredProducts(listData)
-
-      // Ekstraksi daftar jenis unik untuk navbar
-      const uniqueJenis = [...new Set(listData.map(item => item.JENIS).filter(Boolean))]
-      setJenisList(uniqueJenis)
-
-    } catch (error) {
-      console.error('Error mengambil data pricelist:', error.message)
-      toast.error('Gagal memuat data dari tabel Pricelist Aktif')
-    } finally {
-      setLoading(false)
-    }
-  }
-
+  // Fungsi menambah produk ke keranjang
   const addToCart = (product) => {
     setCart((prevCart) => {
       const existing = prevCart.find((item) => item.id === product.id)
@@ -80,6 +51,14 @@ export default function KatalogPage() {
     })
     toast.success(`${product["NAMA PRICELIST"] || product["NAMA PRICELIS~"]} ditambahkan ke keranjang!`)
   }
+
+  // Memisahkan produk berdasarkan jenis/kategori (mengandung kata 'paket' atau tidak)
+  const paketProducts = filteredProducts.filter(item => 
+    item.JENIS?.toLowerCase().includes('paket') || item.KATEGORI?.toLowerCase().includes('paket')
+  )
+  const satuanProducts = filteredProducts.filter(item => 
+    !(item.JENIS?.toLowerCase().includes('paket') || item.KATEGORI?.toLowerCase().includes('paket'))
+  )
 
   return (
     <main className="min-h-screen p-8 bg-gray-50 text-gray-800 relative">
@@ -128,65 +107,77 @@ export default function KatalogPage() {
           </div>
         )}
 
+        {/* List Produk / Loading State */}
         {loading ? (
           <p>Memuat data pricelist aktif...</p>
-        ) : filteredProducts.length === 0 ? (
-          <p className="text-gray-500 py-10 text-center">Belum ada produk/pricelist untuk kategori ini.</p>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2"> 
-  {filteredProducts.map((product) => {
-    const namaProduk = product["NAMA PRICELIST"] || product["NAMA PRICELIS~"] || "Tanpa Nama"
-    const gambarUrl = product["LINK FOTO"] || product.GAMBAR || product.gambar || '' 
+          <div className="space-y-8">
+            
+            {/* 1. KATALOG PAKET (Collapsible) */}
+            <div className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
+              <div 
+                onClick={() => setIsPaketOpen(!isPaketOpen)}
+                className="bg-orange-50 px-6 py-4 flex justify-between items-center cursor-pointer hover:bg-orange-100 transition"
+              >
+                <div className="flex items-center gap-2">
+                  <h2 className="text-base font-bold text-orange-900">📦 KATALOG PAKET</h2>
+                  <span className="text-xs bg-orange-200 text-orange-800 px-2 py-0.5 rounded-full font-semibold">
+                    {paketProducts.length} Item
+                  </span>
+                </div>
+                <span className="text-xs font-semibold text-orange-700">
+                  {isPaketOpen ? '▲ Sembunyikan' : '▼ Tampilkan'}
+                </span>
+              </div>
 
-    return (
-      <div key={product.id} className="bg-white p-2 rounded-md shadow-sm border border-gray-100 flex flex-col justify-between text-[10px]">
-        <div>
-          {/* Gambar lebih kecil (aspect-square tetap terjaga) */}
-          <div className="w-full aspect-square bg-gray-100 rounded-sm mb-1 overflow-hidden flex items-center justify-center">
-            {gambarUrl ? (
-              <img 
-                src={getDirectDriveUrl(gambarUrl)} 
-                alt={namaProduk}
-                className="w-full h-full object-cover"
-              />
-            ) : (
-              <span className="text-[8px] text-gray-400">No Image</span>
-            )}
-          </div>
+              {isPaketOpen && (
+                <div className="p-4">
+                  {paketProducts.length === 0 ? (
+                    <p className="text-gray-400 text-xs py-4 text-center">Tidak ada paket tersedia untuk kategori ini.</p>
+                  ) : (
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2">
+                      {paketProducts.map((product) => renderProductCard(product, addToCart))}
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
 
-          {/* Badge lebih kecil */}
-          <div className="flex gap-1 mb-1 flex-wrap">
-            {product.JENIS && (
-              <span className="text-[8px] font-bold px-1 py-0.5 bg-green-50 text-green-700 rounded-sm">
-                {product.JENIS}
-              </span>
-            )}
-          </div>
-          
-          <h2 className="text-[11px] font-semibold leading-tight line-clamp-2">{namaProduk}</h2>
-        </div>
+            {/* 2. KATALOG SATUAN (Collapsible) */}
+            <div className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
+              <div 
+                onClick={() => setIsSatuanOpen(!isSatuanOpen)}
+                className="bg-gray-100 px-6 py-4 flex justify-between items-center cursor-pointer hover:bg-gray-200 transition"
+              >
+                <div className="flex items-center gap-2">
+                  <h2 className="text-base font-bold text-gray-900">⛺ KATALOG SATUAN</h2>
+                  <span className="text-xs bg-gray-200 text-gray-800 px-2 py-0.5 rounded-full font-semibold">
+                    {satuanProducts.length} Item
+                  </span>
+                </div>
+                <span className="text-xs font-semibold text-gray-700">
+                  {isSatuanOpen ? '▲ Sembunyikan' : '▼ Tampilkan'}
+                </span>
+              </div>
 
-        <div className="mt-2">
-          <div className="mb-1">
-            <span className="block text-[11px] font-bold text-orange-600">
-              Rp {Number(product["HARGA SEWA"] || 0).toLocaleString('id-ID')}
-            </span>
-            <span className="text-[9px] text-gray-400">Stok: {product.STOK}</span>
+              {isSatuanOpen && (
+                <div className="p-4">
+                  {satuanProducts.length === 0 ? (
+                    <p className="text-gray-500 py-10 text-center text-xs">Belum ada produk satuan untuk kategori ini.</p>
+                  ) : (
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2">
+                      {satuanProducts.map((product) => renderProductCard(product, addToCart))}
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+
           </div>
-          <button 
-            onClick={() => addToCart(product)}
-            className="w-full bg-black text-white py-1 rounded text-[10px] font-medium hover:bg-gray-800 transition"
-          >
-            + Keranjang
-          </button>
-        </div>
-      </div>
-    )
-  })}
-</div>
         )}
       </div>
 
+      {/* Modal Keranjang */}
       {isCartOpen && (
         <CartModal 
           cart={cart} 
@@ -197,6 +188,55 @@ export default function KatalogPage() {
         />
       )}
     </main>
+  )
+}
+
+// Helper kecil untuk komponen card produk agar tidak berulang
+function renderProductCard(product, addToCart) {
+  const namaProduk = product["NAMA PRICELIST"] || product["NAMA PRICELIS~"] || "Tanpa Nama"
+  const gambarUrl = product["LINK FOTO"] || product.GAMBAR || product.gambar || '' 
+
+  return (
+    <div key={product.id} className="bg-white p-2 rounded-md shadow-sm border border-gray-100 flex flex-col justify-between text-[10px]">
+      <div>
+        <div className="w-full aspect-square bg-gray-100 rounded-sm mb-1 overflow-hidden flex items-center justify-center">
+          {gambarUrl ? (
+            <img 
+              src={getDirectDriveUrl(gambarUrl)} 
+              alt={namaProduk}
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <span className="text-[8px] text-gray-400">No Image</span>
+          )}
+        </div>
+
+        <div className="flex gap-1 mb-1 flex-wrap">
+          {product.JENIS && (
+            <span className="text-[8px] font-bold px-1 py-0.5 bg-green-50 text-green-700 rounded-sm">
+              {product.JENIS}
+            </span>
+          )}
+        </div>
+        
+        <h2 className="text-[11px] font-semibold leading-tight line-clamp-2">{namaProduk}</h2>
+      </div>
+
+      <div className="mt-2">
+        <div className="mb-1">
+          <span className="block text-[11px] font-bold text-orange-600">
+            Rp {Number(product["HARGA SEWA"] || 0).toLocaleString('id-ID')}
+          </span>
+          <span className="text-[9px] text-gray-400">Stok: {product.STOK}</span>
+        </div>
+        <button 
+          onClick={() => addToCart(product)}
+          className="w-full bg-black text-white py-1 rounded text-[10px] font-medium hover:bg-gray-800 transition"
+        >
+          + Keranjang
+        </button>
+      </div>
+    </div>
   )
 }
 

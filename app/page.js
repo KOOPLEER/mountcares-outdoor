@@ -70,6 +70,15 @@ export default function LandingPage() {
               src="/logo/mountcares-horizontal.png"
               alt="Mountcares Outdoor"
               className="h-10 sm:h-11 w-auto object-contain"
+              onLoad={() => {
+                console.log("Logo berhasil dimuat:", "/logo/mountcares-horizontal.png");
+              }}
+              onError={(e) => {
+                console.error("Logo gagal dimuat!", {
+                  src: e.currentTarget.src,
+                  errorEvent: e,
+                });
+              }}
             />
           </Link>
 

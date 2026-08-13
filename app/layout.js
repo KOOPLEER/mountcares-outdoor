@@ -1,6 +1,10 @@
 import './globals.css'
+import Link from 'next/link'
 
 export const metadata = {
+  // Tambahkan metadataBase di sini agar Next.js tahu domain dasarnya
+  metadataBase: new URL('https://mountcares.com'), // Ganti dengan domain asli Anda atau gunakan localhost untuk dev
+
   title: 'MOUNTCARES Outdoor | One Stop Camping Solution',
 
   description:
@@ -24,14 +28,14 @@ export const metadata = {
 
   openGraph: {
     title: 'MOUNTCARES Outdoor | One Stop Camping Solution',
-    description:
-      'Rental, sewa, dan perlengkapan camping & outdoor untuk kebutuhan petualangan Anda.',
+    description: 'Rental, sewa, dan perlengkapan camping & outdoor untuk kebutuhan petualangan Anda.',
     siteName: 'MOUNTCARES Outdoor',
     locale: 'id_ID',
     type: 'website',
     images: [
       {
-        url: 'https://drive.google.com/file/d/1D65EKXzH05dy2h1tN5nLckfhaqF2KOvz/view?usp=drive_link',
+        // Pastikan path ini sesuai dengan folder public Anda
+        url: '/Logo/mountcares-horizontal.png', 
         width: 1200,
         height: 630,
         alt: 'MOUNTCARES Outdoor - One Stop Camping Solution',

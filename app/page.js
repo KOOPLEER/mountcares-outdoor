@@ -4,11 +4,12 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { ChevronDown, Tent, Utensils, Compass, Menu } from 'lucide-react'
 
+const LOGO_URL =
+  'https://drive.google.com/file/d/1D65EKXzH05dy2h1tN5nLckfhaqF2KOvz/view?usp=drive_link'
+
 function getDirectDriveUrl(url) {
   if (!url) return ''
-
   const value = String(url).trim()
-
   const match =
     value.match(/\/d\/([a-zA-Z0-9_-]+)/) ||
     value.match(/[?&]id=([a-zA-Z0-9_-]+)/)
@@ -16,7 +17,6 @@ function getDirectDriveUrl(url) {
   if (match?.[1]) {
     return `https://lh3.googleusercontent.com/d/${match[1]}`
   }
-
   return value
 }
 

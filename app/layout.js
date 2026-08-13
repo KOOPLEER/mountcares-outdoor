@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 export const metadata = {
   // Tambahkan metadataBase di sini agar Next.js tahu domain dasarnya
-  metadataBase: new URL('https://mountcares.com'), // Ganti dengan domain asli Anda atau gunakan localhost untuk dev
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'),
 
   title: 'MOUNTCARES Outdoor | One Stop Camping Solution',
 

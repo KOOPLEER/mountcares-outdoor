@@ -133,70 +133,57 @@ export default function KatalogPage() {
         ) : filteredProducts.length === 0 ? (
           <p className="text-gray-500 py-10 text-center">Belum ada produk/pricelist untuk kategori ini.</p>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {filteredProducts.map((product) => {
-              const namaProduk = product["NAMA PRICELIST"] || product["NAMA PRICELIS~"] || "Tanpa Nama"
-              // Sesuaikan nama kolom gambar di database Anda (misal: product.GAMBAR atau product.URL_FOTO)
-              const gambarUrl = product["LINK FOTO"] || product.GAMBAR || product.gambar || '' 
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2"> 
+  {filteredProducts.map((product) => {
+    const namaProduk = product["NAMA PRICELIST"] || product["NAMA PRICELIS~"] || "Tanpa Nama"
+    const gambarUrl = product["LINK FOTO"] || product.GAMBAR || product.gambar || '' 
 
-              return (
-                <div key={product.id} className="bg-white p-3 rounded-lg shadow border border-gray-200 flex flex-col justify-between">
-                  <div>
-                    {/* Kotak Gambar disesuaikan menjadi persegi (aspect-square) */}
-                    <div className="w-full aspect-square bg-gray-100 rounded-md mb-3 overflow-hidden flex items-center justify-center">
-                      {gambarUrl ? (
-                        <img 
-                          src={getDirectDriveUrl(gambarUrl)} 
-                          alt={namaProduk}
-                          className="w-full h-full object-cover"
-                          onError={(e) => {
-                            e.target.onerror = null;
-                            e.target.src = 'https://via.placeholder.com/300?text=No+Image';
-                          }}
-                        />
-                      ) : (
-                        <span className="text-xs text-gray-400">Tidak ada gambar</span>
-                      )}
-                    </div>
-
-                    <div className="flex gap-2 mb-2 flex-wrap">
-                      {product.JENIS && (
-                        <span className="text-xs font-semibold px-2 py-1 bg-green-100 text-green-800 rounded-full">
-                          {product.JENIS}
-                        </span>
-                      )}
-                      {product.KATEGORI && (
-                        <span className="text-xs font-semibold px-2 py-1 bg-blue-100 text-blue-800 rounded-full">
-                          {product.KATEGORI}
-                        </span>
-                      )}
-                      {product["HOT ITEM"] === 'YA' && (
-                        <span className="text-xs font-semibold px-2 py-1 bg-orange-100 text-orange-800 rounded-full">
-                          🔥 Hot Item
-                        </span>
-                      )}
-                    </div>
-                    <h2 className="text-sm font-semibold mt-2">{namaProduk}</h2>
-                    {product.VARIASI && <p className="text-xs text-gray-500 mt-0.5">Variasi: {product.VARIASI}</p>}
-                  </div>
-                  <div className="mt-6">
-                    <div className="flex justify-between items-center mb-4">
-                      <span className="text-lg font-bold text-orange-600">
-                        Rp {Number(product["HARGA SEWA"] || 0).toLocaleString('id-ID')} <span className="text-xs font-normal text-gray-500">/ {product.SATUAN || 'unit'}</span>
-                      </span>
-                      <span className="text-sm text-gray-500">Stok: {product.STOK}</span>
-                    </div>
-                    <button 
-                      onClick={() => addToCart(product)}
-                      className="w-full bg-black text-white py-2 rounded font-medium hover:bg-gray-800 transition"
-                    >
-                      + Tambah ke Keranjang
-                    </button>
-                  </div>
-                </div>
-              )
-            })}
+    return (
+      <div key={product.id} className="bg-white p-2 rounded-md shadow-sm border border-gray-100 flex flex-col justify-between text-[10px]">
+        <div>
+          {/* Gambar lebih kecil (aspect-square tetap terjaga) */}
+          <div className="w-full aspect-square bg-gray-100 rounded-sm mb-1 overflow-hidden flex items-center justify-center">
+            {gambarUrl ? (
+              <img 
+                src={getDirectDriveUrl(gambarUrl)} 
+                alt={namaProduk}
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <span className="text-[8px] text-gray-400">No Image</span>
+            )}
           </div>
+
+          {/* Badge lebih kecil */}
+          <div className="flex gap-1 mb-1 flex-wrap">
+            {product.JENIS && (
+              <span className="text-[8px] font-bold px-1 py-0.5 bg-green-50 text-green-700 rounded-sm">
+                {product.JENIS}
+              </span>
+            )}
+          </div>
+          
+          <h2 className="text-[11px] font-semibold leading-tight line-clamp-2">{namaProduk}</h2>
+        </div>
+
+        <div className="mt-2">
+          <div className="mb-1">
+            <span className="block text-[11px] font-bold text-orange-600">
+              Rp {Number(product["HARGA SEWA"] || 0).toLocaleString('id-ID')}
+            </span>
+            <span className="text-[9px] text-gray-400">Stok: {product.STOK}</span>
+          </div>
+          <button 
+            onClick={() => addToCart(product)}
+            className="w-full bg-black text-white py-1 rounded text-[10px] font-medium hover:bg-gray-800 transition"
+          >
+            + Keranjang
+          </button>
+        </div>
+      </div>
+    )
+  })}
+</div>
         )}
       </div>
 

@@ -133,14 +133,14 @@ export default function KatalogPage() {
         ) : filteredProducts.length === 0 ? (
           <p className="text-gray-500 py-10 text-center">Belum ada produk/pricelist untuk kategori ini.</p>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {filteredProducts.map((product) => {
               const namaProduk = product["NAMA PRICELIST"] || product["NAMA PRICELIS~"] || "Tanpa Nama"
               // Sesuaikan nama kolom gambar di database Anda (misal: product.GAMBAR atau product.URL_FOTO)
               const gambarUrl = product["LINK FOTO"] || product.GAMBAR || product.gambar || '' 
 
               return (
-                <div key={product.id} className="bg-white p-5 rounded-lg shadow border border-gray-200 flex flex-col justify-between">
+                <div key={product.id} className="bg-white p-3 rounded-lg shadow border border-gray-200 flex flex-col justify-between">
                   <div>
                     {/* Kotak Gambar disesuaikan menjadi persegi (aspect-square) */}
                     <div className="w-full aspect-square bg-gray-100 rounded-md mb-3 overflow-hidden flex items-center justify-center">
@@ -176,7 +176,7 @@ export default function KatalogPage() {
                         </span>
                       )}
                     </div>
-                    <h2 className="text-xl font-semibold mt-3">{namaProduk}</h2>
+                    <h2 className="text-sm font-semibold mt-2">{namaProduk}</h2>
                     {product.VARIASI && <p className="text-xs text-gray-500 mt-0.5">Variasi: {product.VARIASI}</p>}
                   </div>
                   <div className="mt-6">

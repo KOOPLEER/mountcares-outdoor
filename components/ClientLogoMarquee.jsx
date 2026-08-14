@@ -1,8 +1,8 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
+import { motion } from 'framer-motion'; // Tambahkan ini
 
-// Menggunakan weserv.nl sebagai proxy agar bypass CORS & proteksi Google
 function getDirectDriveUrl(url) {
   if (!url) return '';
   const value = String(url).trim();
@@ -29,7 +29,6 @@ export default function ClientLogoMarquee() {
         setClients(data);
       }
     }
-
     loadClients();
   }, []);
 
@@ -42,25 +41,33 @@ export default function ClientLogoMarquee() {
           Telah Dipercaya Oleh Berbagai Komunitas & Instansi
         </h4>
 
-        <div className="flex flex-wrap justify-center items-center gap-10 sm:gap-16 opacity-95">
-          {clients.map((client) => {
-            const logoUrl = getDirectDriveUrl(client.link_logo);
-
-            return (
-              <div 
-                key={client.id} 
-                className="flex items-center justify-center transition-transform hover:scale-105 duration-200"
-              >
-                {logoUrl && (
-                  <img 
-                    src={logoUrl} 
-                    alt={client.atas_nama || client.kode_klien} 
-                    className="h-16 sm:h-20 w-auto object-contain"
-                  />
-                )}
-              </div>
-            );
-          })}
+        {/* Marquee Wrapper */}
+        <div className="relative flex overflow-hidden">
+          <motion.div 
+            className="flex gap-16 sm:gap-24 items-center"
+            animate={{ x: ["0%", "-50%"] }}
+            transition={{
+              duration: 25, // Kecepatan gerak (semakin besar angkanya, semakin lambat)
+              ease: "linear",
+              repeat: Infinity,
+            }}
+          >
+            {/* Duplikasi list agar loop terlihat seamless */}
+            {[...clients, ...clients].map((client, index) => {
+              const logoUrl = getDirectDriveUrl(client.link_logo);
+              return (
+                <div key={`${client.id}-${index}`} className="flex-shrink-0">
+                  {logoUrl && (
+                    <img 
+                      src={logoUrl} 
+                      alt={client.atas_nama || client.kode_klien} 
+                      className="h-16 sm:h-20 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity"
+                    />
+                  )}
+                </div>
+              );
+            })}
+          </motion.div>
         </div>
       </div>
     </section>

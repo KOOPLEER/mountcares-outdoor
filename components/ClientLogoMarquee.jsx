@@ -37,25 +37,25 @@ export default function ClientLogoMarquee() {
 
   return (
     <section className="py-12 bg-white border-y border-gray-100 overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-8">
         <h4 className="text-xs font-bold uppercase tracking-widest text-muted">
           Telah Dipercaya Oleh Berbagai Komunitas & Instansi
         </h4>
 
-        <div className="flex flex-wrap justify-center items-center gap-8 sm:gap-12 opacity-90">
+        <div className="flex flex-wrap justify-center items-center gap-10 sm:gap-16 opacity-95">
           {clients.map((client) => {
             const logoUrl = getDirectDriveUrl(client.link_logo);
 
             return (
               <div 
                 key={client.id} 
-                className="flex items-center justify-center px-5 py-3 rounded-xl bg-gray-50 border border-gray-200 shadow-sm hover:border-brand-cyan transition-colors"
+                className="flex items-center justify-center transition-transform hover:scale-105 duration-200"
               >
                 {logoUrl && (
                   <img 
                     src={logoUrl} 
                     alt={client.atas_nama || client.kode_klien} 
-                    className="h-10 sm:h-12 w-auto object-contain"
+                    className="h-16 sm:h-20 w-auto object-contain"
                   />
                 )}
               </div>

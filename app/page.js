@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { ChevronDown, Tent, Utensils, Compass, Menu } from 'lucide-react'
+import TrustindexReviews from '@/components/TrustindexReviews';
 
 const LOGO_URL =
   'https://drive.google.com/file/d/1D65EKXzH05dy2h1tN5nLckfhaqF2KOvz/view?usp=drive_link'
@@ -853,6 +854,11 @@ export default function LandingPage() {
 
       </section>
 
+      {/* =====================================================
+      GOOGLE REVIEWS (TRUSTINDEX WIDGET)
+      ===================================================== */}
+      <TrustindexReviews />
+
 
       {/* =====================================================
           FINAL CTA
@@ -938,7 +944,7 @@ export default function LandingPage() {
               <img
                 src="/Logo/mountcares-horizontal.png"
                 alt="Mountcares Outdoor"
-                className="h-10 w-auto object-contain"
+                className="h-auto w-80 object-contain bg-white px-2 py-1 rounded-md"
               />
             </Link>
 
@@ -996,26 +1002,47 @@ export default function LandingPage() {
 
           {/* CONTACT */}
           <div className="space-y-3">
-
             <h4 className="font-semibold text-white text-xs uppercase tracking-wider">
               Kontak & Lokasi
             </h4>
 
-            <p className="text-xs leading-relaxed text-white/60">
+            <p className="text-xs leading-relaxed text-white/60 space-y-2">
+              {/* Alamat (Link Google Maps Dummy) */}
+              <a 
+                href="https://maps.app.goo.gl/qycvhYnobY2BZ3Z39" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="inline-flex items-start gap-2 hover:text-white transition-colors mb-1"
+              >
+                <i className="fa-solid fa-location-dot mt-0.5 text-white shrink-0"></i>
+                <span>
+                  Jl. Kebonagung Gg V RT 03 RW 02 Tamanharjo Singosari, Kabupaten Malang
+                  <br />
+                  Jawa Timur, Indonesia
+                </span>
+              </a>
 
-              Singosari, Kabupaten Malang
               <br />
 
-              Jawa Timur, Indonesia
+              {/* WhatsApp Admin (Link WhatsApp Dummy) */}
+              <a 
+                href="https://wa.me/6285536349616?text=Saya%20ingin%20konsultasi%20layanan%20mountcares%20outdoor%20dari%20informasi%20website"
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 hover:text-white transition-colors mb-1"
+              >
+                <i className="fa-brands fa-whatsapp text-white shrink-0"></i>
+                <span>WhatsApp Admin: 0855-3634-9616</span>
+              </a>
+
               <br />
 
-              WhatsApp Admin: Tersedia di pemesanan
-              <br />
-
-              Jam Operasional: Setiap Hari 08.00 - 21.00 WIB
-
+              {/* Jam Operasional */}
+              <span className="inline-flex items-center gap-2">
+                <i className="fa-regular fa-clock text-white shrink-0"></i>
+                <span>Jam Operasional: Setiap Hari 07.30 - 21.00 WIB</span>
+              </span>
             </p>
-
           </div>
 
         </div>
@@ -1035,3 +1062,4 @@ export default function LandingPage() {
     </div>
   )
 }
+

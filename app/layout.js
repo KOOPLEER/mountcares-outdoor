@@ -8,11 +8,16 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="id">
-      <body className="antialiased min-h-screen bg-background text-foreground">
-        {/* Header global dihapus dari sini karena setiap halaman (seperti landing page) 
-            sudah mengatur navigasinya sendiri, atau bisa dikondisikan */}
+      <head>
+        {/* Tambahkan baris CDN Font Awesome di sini */}
+        <link 
+          rel="stylesheet" 
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" 
+        />
+      </head>
+      <body>
         {children}
       </body>
     </html>
-  )
+  );
 }

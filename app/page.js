@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { ChevronDown, Tent, Utensils, Compass, Menu } from 'lucide-react'
 import TrustindexReviews from '@/components/TrustindexReviews';
+import ClientLogoMarquee from '@/components/ClientLogoMarquee';
 
 const LOGO_URL =
   'https://drive.google.com/file/d/1D65EKXzH05dy2h1tN5nLckfhaqF2KOvz/view?usp=drive_link'
@@ -858,6 +859,11 @@ export default function LandingPage() {
       GOOGLE REVIEWS (TRUSTINDEX WIDGET)
       ===================================================== */}
       <TrustindexReviews />
+      
+      {/* =====================================================
+      Flyer /Logo Klien (SUPABASE DATA FETCH)
+      ===================================================== */}
+      <ClientLogoMarquee />
 
 
       {/* =====================================================

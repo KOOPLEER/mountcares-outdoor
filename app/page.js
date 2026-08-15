@@ -7,6 +7,7 @@ import TrustindexReviews from '@/components/TrustindexReviews';
 import ClientLogoMarquee from '@/components/ClientLogoMarquee';
 import FloatingWhatsApp from '@/components/FloatingWhatsApp';
 import { useKatalogData } from '@/lib/useKatalogData'
+import ClientDocumentationMarquee from '@/components/ClientDocumentationMarquee';
 
 const LOGO_URL =
   'https://drive.google.com/file/d/1D65EKXzH05dy2h1tN5nLckfhaqF2KOvz/view?usp=drive_link'
@@ -30,7 +31,7 @@ export default function LandingPage() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 
   // 1. Panggil featuredProducts dari custom hook yang sudah diperkaya
-const { featuredProducts, loading } = useKatalogData();
+  const { featuredProducts, loading } = useKatalogData();
 
 // ... di dalam bagian return JSX (Product Preview Section):
 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -169,6 +170,14 @@ const { featuredProducts, loading } = useKatalogData();
             >
               Keunggulan
             </a>
+
+            {/* --- Tautan Profil / Tentang Kami --- */}
+            <Link
+              href="/tentang-kami"
+              className="hover:text-brand-blue transition"
+            >
+              Tentang Kami
+            </Link>
 
             <a
               href="#katalog-preview"
@@ -820,98 +829,9 @@ const { featuredProducts, loading } = useKatalogData();
 
 
       {/* =====================================================
-          TESTIMONIAL
+          TESTIMONIAL & DOKUMENTASI DINAMIS
           ===================================================== */}
-      <section
-        className="
-          py-20
-          px-4 sm:px-6 lg:px-8
-          bg-white
-        "
-      >
-
-        <div className="max-w-7xl mx-auto">
-
-          <div className="text-center max-w-2xl mx-auto space-y-3 mb-16">
-
-            <span className="text-brand-cyan text-xs font-bold uppercase tracking-widest">
-              Customer Experience
-            </span>
-
-            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-brand-blue">
-              Apa Kata Petualang?
-            </h2>
-
-            <p className="text-sm text-muted">
-              Pengalaman mereka yang telah mempercayakan kebutuhan
-              perlengkapan outdoor kepada Mountcares.
-            </p>
-
-          </div>
-
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-
-            <div
-              className="
-                bg-brand-light-cyan
-                border
-                border-brand-cyan/20
-                p-6
-                rounded-2xl
-                space-y-4
-              "
-            >
-
-              <div className="flex items-center gap-1 text-brand-cyan text-sm">
-                ★★★★★
-              </div>
-
-              <p className="text-sm text-foreground italic leading-relaxed">
-                &ldquo;Pelayanan ramah, kondisi tenda bersih dan tidak ada
-                yang bocor pas badai di puncak. Sangat direkomendasikan
-                untuk pendaki sekitar Malang!&rdquo;
-              </p>
-
-              <div className="text-xs font-semibold text-brand-blue">
-                - Rifki A., Pendaki Komunitas
-              </div>
-
-            </div>
-
-
-            <div
-              className="
-                bg-brand-light-blue
-                border
-                border-brand-blue/10
-                p-6
-                rounded-2xl
-                space-y-4
-              "
-            >
-
-              <div className="flex items-center gap-1 text-brand-cyan text-sm">
-                ★★★★★
-              </div>
-
-              <p className="text-sm text-foreground italic leading-relaxed">
-                &ldquo;Sistem sewanya sangat rapi dan transparan.
-                Bisa atur jadwal pengecekan alat H-3 jadi tenang
-                sebelum berangkat naik gunung.&rdquo;
-              </p>
-
-              <div className="text-xs font-semibold text-brand-blue">
-                - Dinda P.
-              </div>
-
-            </div>
-
-          </div>
-
-        </div>
-
-      </section>
+      <ClientDocumentationMarquee />
 
       {/* =====================================================
       GOOGLE REVIEWS (TRUSTINDEX WIDGET)
@@ -1068,6 +988,16 @@ const { featuredProducts, loading } = useKatalogData();
                   className="hover:text-brand-cyan transition"
                 >
                   Beranda
+                </Link>
+              </li>
+
+              {/* --- Tautan Profil / Tentang Kami di Footer --- */}
+              <li>
+                <Link
+                  href="/tentang-kami"
+                  className="hover:text-brand-cyan transition"
+                >
+                  Tentang Kami
                 </Link>
               </li>
 

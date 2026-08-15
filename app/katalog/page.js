@@ -226,7 +226,7 @@ export default function KatalogPage() {
     useState(false)
 
   const [isSatuanOpen, setIsSatuanOpen] =
-    useState(true)
+    useState(false)
 
 
   // ====================================================
@@ -384,7 +384,7 @@ export default function KatalogPage() {
 
 
   return (
-    <main className="min-h-screen bg-background text-foreground">
+    <main className="min-h-screen bg-background text-foreground relative">
 
       <Toaster
         position="top-right"
@@ -401,204 +401,6 @@ export default function KatalogPage() {
           },
         }}
       />
-
-
-      {/* ==================================================
-          NAVBAR
-      ================================================== */}
-
-      <header className="
-        sticky
-        top-0
-        z-40
-        bg-surface/95
-        backdrop-blur
-        border-b
-        border-border
-      ">
-
-        <div className="
-          max-w-6xl
-          mx-auto
-          px-4
-          sm:px-6
-          lg:px-8
-          h-16
-          flex
-          items-center
-          justify-between
-          gap-4
-        ">
-
-          {/* LOGO HORIZONTAL */}
-
-          <Link
-            href="/"
-            className="flex items-center shrink-0"
-          >
-            <img
-              src={getDirectDriveUrl(LOGO_URL)}
-              alt="Mountcares Outdoor"
-              className="
-                h-9
-                sm:h-11
-                w-auto
-                max-w-47.5
-                object-contain
-              "
-              onError={(e) => {
-                const fallback =
-                  getDriveThumbnailUrl(LOGO_URL)
-
-                if (
-                  fallback &&
-                  e.currentTarget.src !== fallback
-                ) {
-                  e.currentTarget.src = fallback
-                }
-              }}
-            />
-          </Link>
-
-
-          {/* NAVIGATION */}
-
-          <nav className="
-            hidden
-            sm:flex
-            items-center
-            gap-1
-          ">
-
-            <Link
-              href="/"
-              className="
-                px-3
-                py-2
-                rounded-lg
-                text-sm
-                font-medium
-                text-muted
-                hover:text-brand-blue
-                hover:bg-brand-light-blue
-                transition
-              "
-            >
-              Beranda
-            </Link>
-
-            <Link
-              href="/katalog"
-              className="
-                px-3
-                py-2
-                rounded-lg
-                text-sm
-                font-semibold
-                bg-brand-light-blue
-                text-brand-blue
-                transition
-              "
-            >
-              Katalog
-            </Link>
-
-          </nav>
-
-
-          {/* CART CTA */}
-
-          <button
-            onClick={() =>
-              setIsCartOpen(true)
-            }
-            className="
-              bg-brand-cyan
-              text-white
-              px-3
-              sm:px-4
-              py-2
-              rounded-lg
-              text-xs
-              sm:text-sm
-              font-semibold
-              shadow-sm
-              hover:bg-brand-dark-cyan
-              transition
-              flex
-              items-center
-              gap-1.5
-              shrink-0
-            "
-          >
-            <ShoppingCart size={16} />
-
-            <span className="hidden sm:inline">
-              Keranjang
-            </span>
-
-            <span>
-              ({cartCount})
-            </span>
-          </button>
-
-        </div>
-
-
-        {/* MOBILE NAV */}
-
-        <div className="
-          sm:hidden
-          border-t
-          border-border
-        ">
-
-          <div className="
-            max-w-6xl
-            mx-auto
-            px-4
-            py-2
-            flex
-            gap-1
-          ">
-
-            <Link
-              href="/"
-              className="
-                flex-1
-                text-center
-                py-1.5
-                rounded-lg
-                text-xs
-                font-medium
-                text-muted
-              "
-            >
-              Beranda
-            </Link>
-
-            <Link
-              href="/katalog"
-              className="
-                flex-1
-                text-center
-                py-1.5
-                rounded-lg
-                text-xs
-                font-semibold
-                bg-brand-light-blue
-                text-brand-blue
-              "
-            >
-              Katalog
-            </Link>
-
-          </div>
-
-        </div>
-
-      </header>
-
 
       <div className="
         max-w-6xl
@@ -872,143 +674,53 @@ export default function KatalogPage() {
 
 
       {/* ==================================================
-          FOOTER
+          FLOATING CART BUTTON (DI SISI KIRI BAWAH)
+          Aman dari tombol WhatsApp layout di kanan bawah
       ================================================== */}
 
-      <footer className="
-        bg-brand-dark-blue
-        text-white
-        mt-8
-      ">
+      {/* ==================================================
+          FLOATING CART BUTTON (DISERAGAMKAN TINGGINYA)
+      ================================================== */}
 
-        <div className="
-          max-w-6xl
-          mx-auto
-          px-4
-          sm:px-6
-          lg:px-8
-          py-8
-        ">
-
-          <div className="
-            flex
-            flex-col
-            sm:flex-row
-            justify-between
-            gap-5
-          ">
-
-            <div>
-
-              <img
-                src={getDirectDriveUrl(LOGO_URL)}
-                alt="Mountcares Outdoor"
-                className="
-                  h-10
-                  w-auto
-                  object-contain
-                  brightness-0
-                  invert
-                  mb-3
-                "
-                onError={(e) => {
-                  const fallback =
-                    getDriveThumbnailUrl(LOGO_URL)
-
-                  if (
-                    fallback &&
-                    e.currentTarget.src !== fallback
-                  ) {
-                    e.currentTarget.src =
-                      fallback
-                  }
-                }}
-              />
-
-              <p className="
-                text-xs
-                text-white/70
-                max-w-sm
-              ">
-                ONE STOP CAMPING SOLUTION untuk
-                kebutuhan perlengkapan outdoor
-                dan petualangan Anda.
-              </p>
-
-            </div>
-
-
-            <div className="
-              flex
-              flex-col
-              gap-2
-              text-xs
-            ">
-
-              <Link
-                href="/"
-                className="
-                  text-white/70
-                  hover:text-white
-                  transition
-                "
-              >
-                Beranda
-              </Link>
-
-              <Link
-                href="/katalog"
-                className="
-                  text-white
-                  font-semibold
-                "
-              >
-                Katalog
-              </Link>
-
-            </div>
-
-          </div>
-
-
-          <div className="
-            border-t
-            border-white/10
-            mt-6
-            pt-4
-            text-[10px]
-            text-white/50
-          ">
-            © {new Date().getFullYear()}
-            {' '}
-            MOUNTCARES Outdoor. All rights
-            reserved.
-          </div>
-
-        </div>
-
-      </footer>
-
-      {/* --- TOMBOL WHATSAPP MELAYANG --- */}
-        <a
-          href="https://wa.me/6285536349616?text=Saya%20ingin%20konsultasi%20layanan%20mountcares%20outdoor%20dari%20informasi%20website"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="fixed bottom-6 right-6 z-50 bg-emerald-500 hover:bg-emerald-600 text-white p-4 rounded-full shadow-2xl transition-all duration-300 hover:scale-110 flex items-center justify-center"
-          aria-label="Chat WhatsApp"
-        >
-          <svg 
-            className="w-7 h-7 fill-current" 
-            xmlns="http://www.w3.org/2000/svg" 
-            viewBox="0 0 24 24"
-          >
-            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
-          </svg>
-        </a>
+      <button
+        onClick={() => setIsCartOpen(true)}
+        className="
+          fixed
+          bottom-6
+          right-22
+          z-40
+          h-14
+          bg-brand-cyan
+          text-white
+          px-5
+          rounded-full
+          text-sm
+          sm:text-base
+          font-bold
+          shadow-xl
+          hover:bg-brand-dark-cyan
+          transition-all
+          duration-300
+          flex
+          items-center
+          gap-2.5
+          scale-100
+          hover:scale-105
+        "
+        aria-label="Keranjang Belanja"
+      >
+        <ShoppingCart size={20} />
+        <span className="hidden sm:inline">
+          Keranjang
+        </span>
+        <span className="bg-white text-brand-cyan px-2 py-0.5 rounded-full text-xs font-extrabold">
+          {cartCount}
+        </span>
+      </button>
 
 
       {/* ==================================================
-          CART
+          CART MODAL
       ================================================== */}
 
       {isCartOpen && (

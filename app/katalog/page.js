@@ -219,6 +219,8 @@ export default function KatalogPage() {
       tanggal_pengecekan: '',
     })
 
+  const [isPosterOpen, setIsPosterOpen] = useState(false)
+
   const [isCartOpen, setIsCartOpen] =
     useState(false)
 
@@ -576,6 +578,38 @@ export default function KatalogPage() {
 
           <div className="space-y-8 pb-12">
 
+            {/* ==================================================
+                BROSUR PRICELIST & KETENTUAN
+            ================================================== */}
+            <div className="mt-4 flex flex-wrap items-center gap-3">
+            <p className="text-xs sm:text-base text-muted max-w-2xl">
+              Temukan perlengkapan camping, hiking, dan outdoor sesuai kebutuhan petualangan Anda.
+            </p>
+            
+            <button
+              type="button"
+              onClick={() => setIsPosterOpen(true)}
+              className="
+                px-4
+                py-2
+                rounded-xl
+                bg-brand-cyan
+                text-white
+                text-xs
+                sm:text-sm
+                font-bold
+                shadow-md
+                hover:bg-brand-dark-cyan
+                transition
+                flex
+                items-center
+                gap-2
+              "
+            >
+              <span>🖼️</span> Lihat Brosur Pricelist & Ketentuan
+            </button>
+          </div>
+
 
             {/* ==================================================
                 SATUAN
@@ -717,6 +751,14 @@ export default function KatalogPage() {
           {cartCount}
         </span>
       </button>
+
+      {/* ==================================================
+          POSTER MODAL
+      ================================================== */}
+
+      {isPosterOpen && (
+        <PosterModal onClose={() => setIsPosterOpen(false)} />
+      )}
 
 
       {/* ==================================================
@@ -3516,4 +3558,115 @@ function FormField({
 
     </div>
   )
+}
+
+// ======================================================
+// POSTER & KETENTUAN MODAL
+// ======================================================
+
+import React from 'react';
+
+function PosterModal({ onClose }) {
+  // Path langsung diarahkan ke root folder 'public' menggunakan string path
+  const posterList = [
+    { 
+      title: 'Brosur Pricelist 1', 
+      src: '/Poster/BrosurPricelist1.png' 
+    },
+    { 
+      title: 'Brosur Pricelist 2', 
+      src: '/Poster/BrosurPricelist2.png' 
+    },
+    { 
+      title: 'Syarat & Ketentuan 1', 
+      src: '/Poster/BrosurSyaratKetentuan1.png' 
+    },
+    { 
+      title: 'Syarat & Ketentuan 2', 
+      src: '/Poster/BrosurSyaratKetentuan2.png' 
+    },
+    { 
+      title: 'Pricelist Jasa & Jam Operasional', 
+      src: '/Poster/BrosurSyaratKetentuanJasaJamOperasional.png' 
+    },
+  ];
+
+  return (
+    <div className="
+      fixed
+      inset-0
+      bg-brand-dark-blue/70
+      backdrop-blur-sm
+      flex
+      items-center
+      justify-center
+      p-4
+      z-50
+    ">
+      <div className="
+        bg-surface
+        p-5
+        sm:p-6
+        rounded-2xl
+        max-w-3xl
+        w-full
+        shadow-2xl
+        border
+        border-border
+        max-h-[90vh]
+        flex
+        flex-col
+      ">
+        {/* Header Modal */}
+        <div className="flex items-center justify-between pb-4 border-b border-border mb-4">
+          <div>
+            <h2 className="text-lg sm:text-xl font-bold">Brosur Resmi & Ketentuan Rental</h2>
+            <p className="text-xs text-muted">Informasi lengkap pricelist, diskon durasi, dan aturan sewa Mountcares.</p>
+          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            className="w-8 h-8 rounded-full bg-brand-light-blue text-brand-blue hover:bg-brand-blue hover:text-white transition flex items-center justify-center"
+          >
+            ✕
+          </button>
+        </div>
+
+        {/* Galeri Poster */}
+        <div className="overflow-y-auto space-y-6 pr-2 flex-1">
+          {posterList.map((poster, index) => (
+            <div key={index} className="space-y-2 border-b border-border pb-4 last:border-0">
+              <h3 className="text-xs font-bold text-brand-dark-blue uppercase tracking-wide">
+                {index + 1}. {poster.title}
+              </h3>
+              <div className="bg-brand-light-cyan rounded-xl p-2 border border-brand-cyan/20 overflow-hidden flex justify-center">
+                <img
+                  src={poster.src}
+                  alt={poster.title}
+                  className="w-full max-w-xl h-auto rounded-lg object-contain shadow-sm cursor-pointer hover:opacity-95 transition"
+                  loading="lazy"
+                  title="Klik untuk memperbesar gambar"
+                  onClick={() => window.open(poster.src, '_blank')}
+                  onError={(e) => {
+                    console.error(`[ERROR] Gagal memuat gambar: ${poster.title}`, e);
+                  }}
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Footer Modal */}
+        <div className="pt-4 border-t border-border mt-4 flex justify-end">
+          <button
+            type="button"
+            onClick={onClose}
+            className="px-5 py-2 bg-brand-blue text-white rounded-lg text-sm font-semibold hover:bg-brand-dark-blue transition"
+          >
+            Tutup Brosur
+          </button>
+        </div>
+      </div>
+    </div>
+  );
 }

@@ -21,7 +21,7 @@ export default function TentangKamiPage() {
           <div className="flex flex-col sm:flex-row items-center justify-between gap-8 mb-12">
 
             <img
-              src="/mountcares-horizontal.png"
+              src="Logo/mountcares-horizontal.png"
               alt="Mountcares Outdoor"
               className="w-auto h-16 sm:h-20 object-contain"
             />
@@ -31,7 +31,7 @@ export default function TentangKamiPage() {
 
 
             <img
-              src="/logo-urban-wild-journey.png"
+              src="Logo/urban-wild-journey.png"
               alt="Urban Wild Journey"
               className="w-auto h-20 sm:h-24 object-contain"
             />
@@ -1068,7 +1068,7 @@ export default function TentangKamiPage() {
 
 
                 <a
-                  href="https://sites.google.com/view/mountcaresoutdoor/home"
+                  href="https://mountcares.id"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="mt-2 inline-block text-sm font-medium text-brand-light-cyan hover:underline"
